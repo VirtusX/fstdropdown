@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>fstdropdown demo</title>
+  <meta name="description" content="fstdropdown demo">
+  <meta name="author" content="VirtusX">
+  <link rel="stylesheet" href="fstdropdown.css">
+</head>
+<body>
+	<h1>fstdropdown demo</h1>
+	<p>fstdropdown initializes on page load, just add class "fstdropdown-select" to your select. 	</p>
+	<p>
+	<code>	 &lt;select class='fstdropdown-select'>	 &lt;/select>	</code>
+	<select class='fstdropdown-select' id="first">
+		<option value="">Select option</option>
+		<option value="1">First</option>
+		<option value="2">Second</option>
+		<option value="3">Third</option>
+	</select>
+	</p>
+	<p>If you dont need search in dropdown,just add data-searchdisable="true" to select.</p>
+		<p>
+	<code>	 &lt;select class='fstdropdown-select' data-searchdisable="true">	 &lt;/select>	</code>
+	<select class='fstdropdown-select' data-searchdisable='true' id="second">
+		<option value="">Select option</option>
+		<option value="1">First</option>
+		<option value="2">Second</option>
+		<option value="3">Third</option>
+	</select>
+	</p>
+	<p>If you add select dynamically, add "fstdropdown-select" to it and call function setFstDropdown().</p>
+	<p>
+	<select id="third">
+		<option value="">Select option</option>
+		<option value="1">First</option>
+		<option value="2">Second</option>
+		<option value="3">Third</option>
+	</select>
+	</p>
+	<p>	<button type="button" onclick="setDrop()">Set dropdown</button> <button onclick="removeDrop()">Remove dropdown</Button></p>
+	<p>If you change your select options list, use document.querySelector("your select").fstdropdown.rebind() to update dropdown list.</p>
+	<p>
+		<select class='fstdropdown-select' id="fourth">
+			<option value="">Select option</option>
+			<option value="1">First</option>
+			<option value="2">Second</option>
+			<option value="3">Third</option>
+		</select>
+	</p>
+	<p>
+		<button type="button" onclick="addOptions()">Add options</button>
+		<button type="button" onclick="removeOptions()">Remove options</button>
+		<button onclick="updateDrop()">Update dropdown</Button>
+	</p>
+	
+	<script src="fstdropdown.js"></script>
+	<script>
+		function setDrop(){
+		if(!document.getElementById('third').classList.contains("fstdropdown-select"))
+			document.getElementById('third').className='fstdropdown-select'; 
+			setFstDropdown();
+		}
+		function removeDrop(){
+		if(document.getElementById('third').classList.contains("fstdropdown-select")){
+				document.getElementById('third').classList.remove('fstdropdown-select'); 
+				document.getElementById("third").fstdropdown.dd.remove();
+			}
+		}
+		function addOptions(){
+			var select = document.getElementById("fourth");
+			if(select.options[4]==undefined){
+				var opt = document.createElement("option");
+				opt.text = "Fourth";
+				opt.value = "4";
+				select.add(opt);
+				var opt2 = document.createElement("option");
+				opt2.text = "Fifth";
+				opt2.value = "5";
+				select.add(opt2);
+			}
+		}
+		function removeOptions(){
+			var select = document.getElementById("fourth");
+			if(select.options[4]!=undefined){
+				select.options[4].remove();
+				select.options[4].remove();
+			}
+		}
+		function updateDrop(){
+			document.getElementById("fourth").fstdropdown.rebind();
+		}
+	</script>
+</body>
+</html>
