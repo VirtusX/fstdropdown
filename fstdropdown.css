@@ -1,12 +1,26 @@
-﻿.fstdropdown {
+﻿.fstdiv {
     position: relative;
+    min-height: 34px;
+    width: 100%;
+    width: -moz-available;         
+    width: -webkit-fill-available;  
+    width: fill-available;
+}
+.fstdiv.open {
+    z-index: 2147483647
+}
+.fstdropdown {
     vertical-align: middle;
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
     background: white;
-    overflow: hidden
+    overflow: hidden;
+    width: inherit
 }
+    .fstdiv.open > .fstdropdown{
+        position: absolute;
+    }
 
     .fstdropdown > .fstselected {
         line-height: 1.42857143;

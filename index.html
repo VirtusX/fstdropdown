@@ -43,14 +43,16 @@
     <p>
         <select class='fstdropdown-select' id="fourth">
             <option value="">Select option</option>
-            <option value="1">First</option>
-            <option value="2">Second</option>
-            <option value="3">Third</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
         </select>
     </p>
     <p>
-        <button type="button" onclick="addOptions()">Add options</button>
-        <button type="button" onclick="removeOptions()">Remove options</button>
+        <button type="button" onclick="addOptions(1)">Add option</button>
+        <button type="button" onclick="addOptions(1000)">Add thousand options</button>
+        <button type="button" onclick="removeOptions(1)">Remove option</button>
+        <button type="button" onclick="removeOptions(1000)">Remove thousand options</button>
         <button onclick="updateDrop()">Update dropdown</button>
     </p>
     <p>You can use multiselect, by adding attribute multiple="multiple" to select</p>
@@ -101,24 +103,22 @@
                 document.getElementById("third").fstdropdown.dd.remove();
             }
         }
-        function addOptions() {
+        function addOptions(add) {
             var select = document.getElementById("fourth");
-            if (select.options[4] == undefined) {
+            for (var i = 0; i < add; i++) {
                 var opt = document.createElement("option");
-                opt.text = "Fourth";
-                opt.value = "4";
+                var o = Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0];
+                var last = o == undefined ? 1 : Number(o.value) + 1;
+                opt.text = opt.value = last;
                 select.add(opt);
-                var opt2 = document.createElement("option");
-                opt2.text = "Fifth";
-                opt2.value = "5";
-                select.add(opt2);
             }
         }
-        function removeOptions() {
-            var select = document.getElementById("fourth");
-            if (select.options[4] != undefined) {
-                select.options[4].remove();
-                select.options[4].remove();
+        function removeOptions(remove) {
+            for (var i = 0; i < remove; i++) {
+                var last = Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0];
+                if (last == undefined)
+                    break;
+                Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0].remove();
             }
         }
         function updateDrop() {

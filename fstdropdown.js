@@ -16,7 +16,8 @@ function setFstDropdown() {
         var searchDisable = select.dataset["searchdisable"];
         var placeholder = select.dataset["placeholder"];
         var opened = select.dataset["opened"];
-        var dropdown = createFstElement("div", "fstdropdown" + (opened != null && opened == "true" ? " open" : ""), select.parentNode,
+        var div = createFstElement("div", "fstdiv", select.parentNode, null);
+        var dropdown = createFstElement("div", "fstdropdown" + (opened != null && opened == "true" ? " open" : ""), div,
             opened == null || opened != "true" ? { "click": openSelect, "blur": openSelect } : null);
         dropdown.select = select;
         dropdown.setAttribute("tabindex", "0");
@@ -48,13 +49,17 @@ function setFstDropdown() {
             || event.target.tagName == "INPUT" && event.type != "blur"
             || event.target.tagName == "INPUT" && (event.relatedTarget != null && event.relatedTarget.className == "fstdropdown open")
             || event.target.classList.contains("fstselected") && event.type == "blur" && document.activeElement.classList.contains("fstsearchinput")
-            || event.type == "blur" && document.activeElement.className == "fstlist"
+            || event.type == "blur" && (document.activeElement.className == "fstlist" || document.activeElement.className == "fstAll")
             || event.target.tagName == "BUTTON" && force == undefined) return;
         if (!open || el.classList.contains("open")) {
             el.classList.remove("open");
+            el.parentNode.classList.remove("open");
             return;
         }
         el.classList.add("open");
+        el.parentNode.classList.add("open");
+        if(select.dataset["searchdisable"] == null && select.dataset["searchdisable"] != "true")
+            el.querySelector(".fstsearchinput").focus();
     }
 
     function changeSelect(event) {
@@ -110,7 +115,7 @@ function setFstDropdown() {
             if (select.multiple) {
                 var count = 0;
                 for (var s in select.options)
-                    if (select.options[s].selected == true)
+                    if (select.options.hasOwnProperty(s) && select.options[s].selected == true)
                         count++;
                 text = count == 1 ? selected.text : count + " options selected";
             }
@@ -178,12 +183,12 @@ function setFstDropdown() {
             if (select.multiple) {
                 var count = 0;
                 for (var s in select.options)
-                    if (select.options[s].selected == true)
+                    if (select.options.hasOwnProperty(s) && select.options[s].selected == true)
                         count++;
                 text = count == 1 ? selected.text : count + " options selected";
             }
             select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : selected != undefined ? selected.text : "";
-            openSelect(event, false, true)
+            openSelect(event, false, true);
         }
     }
 }
