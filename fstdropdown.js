@@ -45,12 +45,7 @@ function setFstDropdown() {
         var select = event.target.classList.contains("fstdropdown") ? event.target.select : event.target.closest(".fstdropdown").select;
         open = open == null ? event.type != "blur" : open;
         var el = select.fstdropdown.dd;
-        if (event.relatedTarget != null && (event.relatedTarget.tagName == "INPUT" || (event.relatedTarget.tagName == "BUTTON" && force == undefined))
-            || event.target.tagName == "INPUT" && event.type != "blur"
-            || event.target.tagName == "INPUT" && (event.relatedTarget != null && event.relatedTarget.className == "fstdropdown open")
-            || event.target.classList.contains("fstselected") && event.type == "blur" && document.activeElement.classList.contains("fstsearchinput")
-            || event.type == "blur" && (document.activeElement.className == "fstlist" || document.activeElement.className == "fstAll")
-            || event.target.tagName == "BUTTON" && force == undefined) return;
+        if (checkEvent(event, force)) return;
         if (!open || el.classList.contains("open")) {
             el.classList.remove("open");
             el.parentNode.classList.remove("open");
@@ -60,6 +55,15 @@ function setFstDropdown() {
         el.parentNode.classList.add("open");
         if(select.dataset["searchdisable"] == null && select.dataset["searchdisable"] != "true")
             el.querySelector(".fstsearchinput").focus();
+    }
+
+    function checkEvent(event, force) {
+        return event.relatedTarget != null && (event.relatedTarget.tagName == "INPUT" || (event.relatedTarget.tagName == "BUTTON" && force == undefined))
+            || event.target.tagName == "INPUT" && event.type != "blur"
+            || event.target.tagName == "INPUT" && (event.relatedTarget != null && event.relatedTarget.className == "fstdropdown open")
+            || event.target.classList.contains("fstselected") && event.type == "blur" && document.activeElement.classList.contains("fstsearchinput")
+            || event.type == "blur" && (document.activeElement.className == "fstlist" || document.activeElement.className == "fstAll")
+            || event.target.tagName == "BUTTON" && force == undefined;
     }
 
     function changeSelect(event) {
@@ -77,20 +81,24 @@ function setFstDropdown() {
             initNewEvent("change", select);
         }
         if (select.multiple) {
-            select.querySelector("[value='" + event.target.dataset["value"] + "']").selected = !event.target.classList.contains("selected");
-            if (event.target.classList.contains("selected"))
-                event.target.classList.remove("selected");
-            else
-                event.target.classList.add("selected");
-            initNewEvent("change", select);
-            var length = dd.querySelectorAll(".fstlist>.selected").length;
-            selectAll.selected = length > 0;
-            if (opened)
-                dd.querySelector(".fstselected").textContent = length == 1 ? event.target.textContent : length + " options selected";
-            selectAll.textContent = selectAll.selected ? "Deselect All" : "Select All";
+            changeMultipleSelect(select, event, dd, selectAll, opened);
         }
         if (opened)
             openSelect(event, false);
+    }
+
+    function changeMultipleSelect(select, event, dd, selectAll, opened) {
+        select.querySelector("[value='" + event.target.dataset["value"] + "']").selected = !event.target.classList.contains("selected");
+        if (event.target.classList.contains("selected"))
+            event.target.classList.remove("selected");
+        else
+            event.target.classList.add("selected");
+        initNewEvent("change", select);
+        var length = dd.querySelectorAll(".fstlist>.selected").length;
+        selectAll.selected = length > 0;
+        if (opened)
+            dd.querySelector(".fstselected").textContent = length == 1 ? event.target.textContent : length + " options selected";
+        selectAll.textContent = selectAll.selected ? "Deselect All" : "Select All";
     }
 
     function rebindDropdown(select) {
@@ -109,18 +117,7 @@ function setFstDropdown() {
                 ddList.appendChild(listEl);
             }
         }
-        if (select.dataset["opened"] == null || select.dataset["opened"] != "true") {
-            var text = "";
-            var selected = select.options[select.selectedIndex];
-            if (select.multiple) {
-                var count = 0;
-                for (var s in select.options)
-                    if (select.options.hasOwnProperty(s) && select.options[s].selected == true)
-                        count++;
-                text = count == 1 ? selected.text : count + " options selected";
-            }
-            select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : selected != undefined ? selected.text : "";
-        }
+        setHeader(select, null);
     }
 
     function initNewEvent(eventName, target) {
@@ -177,18 +174,23 @@ function setFstDropdown() {
             }
         initNewEvent("change", select);
         event.target.textContent = !selected ? "Select All" : "Deselect All";
+        setHeader(select, event);
+    }
+
+    function setHeader(select, event) {
         if (select.dataset["opened"] == null || select.dataset["opened"] != "true") {
             var text = "";
-            var selected = select.options[select.selectedIndex];
+            var sOption = select.options[select.selectedIndex];
             if (select.multiple) {
                 var count = 0;
                 for (var s in select.options)
                     if (select.options.hasOwnProperty(s) && select.options[s].selected == true)
                         count++;
-                text = count == 1 ? selected.text : count + " options selected";
+                text = count == 1 ? sOption.text : count + " options selected";
             }
-            select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : selected != undefined ? selected.text : "";
-            openSelect(event, false, true);
+            select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : sOption != undefined ? sOption.text : "";
+            if(event != null)
+                openSelect(event, false, true);
         }
     }
 }
