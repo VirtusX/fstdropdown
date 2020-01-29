@@ -149,7 +149,8 @@ function setFstDropdown() {
         var element = document.createElement(type);
         if (className != null)
             for (var c in className.split(" "))
-                element.classList.add(className.split(" ")[c]);
+                if (!isNaN(c))
+                    element.classList.add(className.split(" ")[c]);
         if (eventListener != null)
             for (var ev in eventListener)
                 if (eventListener.hasOwnProperty(ev))
