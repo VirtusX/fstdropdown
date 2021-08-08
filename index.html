@@ -14,7 +14,7 @@
         <code>	 &lt;select class='fstdropdown-select'>	 &lt;/select>	</code>
         <select class='fstdropdown-select' id="first">
             <option value="">Select option</option>
-            <option value="1">First</option>
+            <option value="1">1   First   2</option>
             <option value="2">Second</option>
             <option value="3">Third</option>
         </select>
@@ -101,6 +101,7 @@
             if (document.getElementById('third').classList.contains("fstdropdown-select")) {
                 document.getElementById('third').classList.remove('fstdropdown-select');
                 document.getElementById("third").fstdropdown.dd.remove();
+                document.querySelector("#third~.fstdiv").remove();
             }
         }
         function addOptions(add) {

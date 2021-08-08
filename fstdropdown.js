@@ -109,7 +109,7 @@ function setFstDropdown() {
         for (var opt in optList) {
             if (optList.hasOwnProperty(opt)) {
                 var listEl = document.createElement("div");
-                listEl.textContent = optList[opt].text;
+                listEl.textContent = optList[opt].textContent;
                 listEl.dataset["value"] = optList[opt].value;
                 if (optList[opt].selected)
                     listEl.classList.add("selected");
@@ -187,9 +187,9 @@ function setFstDropdown() {
                 for (var s in select.options)
                     if (select.options.hasOwnProperty(s) && select.options[s].selected == true)
                         count++;
-                text = count == 1 ? sOption.text : count + " options selected";
+                text = count == 1 ? sOption.textContent : count + " options selected";
             }
-            select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : sOption != undefined ? sOption.text : "";
+            select.fstdropdown.dd.querySelector(".fstselected").textContent = select.multiple ? text : sOption != undefined ? sOption.textContent : "";
             if(event != null)
                 openSelect(event, false, true);
         }
