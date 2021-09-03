@@ -36,11 +36,25 @@ function setFstDropdown() {
             selectAll.selected = false;
         }
         createFstElement("div", "fstlist", dropdown, null);
-        select.fstdropdown = { dd: dropdown, rebind: function () { rebindDropdown(select); } };
+        select.fstdropdown = { dd: dropdown, rebind: function () { rebindDropdown(select); }, setValue: function(value){setValue(dropdown, value)} };
         rebindDropdown(select);
         select.classList.add("fstcreated");
     }
-
+    function setValue(dd, value) {
+        if (Array.isArray(value))
+            for (var v in value) {
+                if (value.hasOwnProperty(v)) {
+                    var val = dd.querySelector(".fstlist div[data-value='" + value[v] + "']");
+                    if (val != null)
+                        val.dispatchEvent(new Event('click', { 'bubbles': true }));
+                }
+            }
+        else {
+            var val = dd.querySelector(".fstlist div[data-value='" + value + "']");
+            if(val != null)
+                val.dispatchEvent(new Event('click', { 'bubbles': true }));
+        }
+    }
     function openSelect(event, open, force) {
         var select = event.target.classList.contains("fstdropdown") ? event.target.select : event.target.closest(".fstdropdown").select;
         open = open == null ? event.type != "blur" : open;
