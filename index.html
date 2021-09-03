@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -72,6 +72,23 @@
             <option value="3">Third</option>
         </select>
     </p>
+    <p>
+        If you need to select value, use document.querySelector("your select").fstdropdown.setValue() function.
+    </p>
+<p>
+    For select one option, use document.querySelector("your select").fstdropdown.setValue("your option"), for multiple options document.querySelector("your select").fstdropdown.setValue(["option 1", "option 2"])
+</p>
+<p>
+    <select class="fstdropdown-select" id="selectOptions" multiple="multiple">
+        <option value="1">First</option>
+        <option value="2">Second</option>
+        <option value="3">Third</option>
+    </select>
+</p>
+<p>
+    <button type="button" onclick='document.querySelector("#selectOptions").fstdropdown.setValue("1")'>Select first option</button>
+    <button type="button" onclick='document.querySelector("#selectOptions").fstdropdown.setValue(["2", "3"])'>Select second and third options</button>
+</p>
     <p>If you want to use opened select or multiselect, add data-opened="true" to select</p>
     <p>
         <div style="width: 50%; float: left">
