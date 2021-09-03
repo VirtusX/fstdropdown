@@ -12,4 +12,6 @@ If you dont need search in dropdown, just add data-searchdisable="true" to the s
 To add placeholder to search input, add data-placeholder to select.
 To use opened select or multiselect, add data-opened="true" to select.
 
+To select value, you can use document.querySelector("your select").fstdropdown.setValue("your value"). If you want to select multiple values, you can send array of values document.querySelector("your select").fstdropdown.setValue(["value1", "value2", "value3"]).
+
 Demo - https://htmlpreview.github.io/?https://github.com/VirtusX/fstdropdown/blob/master/index.html
